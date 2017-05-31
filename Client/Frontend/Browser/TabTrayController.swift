@@ -568,6 +568,10 @@ class TabTrayController: UIViewController {
         // If we are exiting private mode and we have the close private tabs option selected, make sure
         // we clear out all of the private tabs
         let exitingPrivateMode = !privateMode && tabManager.shouldClearPrivateTabs()
+        if exitingPrivateMode {
+            tabManager.removeAllPrivateTabsAndNotify(false)
+        }
+        profile.prefs.setBool(privateMode, forKey: "isInPrivateMode")
 
         toolbar.maskButton.setSelected(privateMode, animated: true)
         collectionView.layoutSubviews()

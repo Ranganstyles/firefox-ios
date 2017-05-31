@@ -472,6 +472,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     func applicationDidEnterBackground(_ application: UIApplication) {
         syncOnDidEnterBackground(application: application)
 
+        getProfile(application).prefs.setBool((browserViewController.tabManager.selectedTab?.isPrivate ?? getProfile(application).prefs.boolForKey("isInPrivateMode"))!, forKey: "isInPrivateMode")
+
         let elapsed = Int(Date().timeIntervalSince1970) - foregroundStartTime
         Telemetry.recordEvent(UsageTelemetry.makeEvent(elapsed))
         sendCorePing()

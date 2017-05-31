@@ -10,6 +10,7 @@ import Leanplum
 private let LeanplumEnvironmentKey = "LeanplumEnvironment"
 private let LeanplumAppIdKey = "LeanplumAppId"
 private let LeanplumKeyKey = "LeanplumKey"
+let PrivateModeChanged = "Private Mode Changed"
 
 private let log = Logger.browserLogger
 
@@ -122,13 +123,13 @@ class LeanplumIntegration {
     // Events
 
     func track(eventName: LeanplumEventName) {
-        if shouldSendToLP() {
+        if let isInPrivateMode = profile?.prefs.boolForKey("isInPrivateMode"), !isInPrivateMode && shouldSendToLP() {
             Leanplum.track(eventName.rawValue)
         }
     }
 
-    func track(eventName: LeanplumEventName, withParameters parameters: [String: AnyObject]) {
-        if shouldSendToLP() {
+    func track(eventName: LeanplumEventName, withParameters parameters: [String: AnyObject], isPrivate: Bool) {
+        if let isInPrivateMode = profile?.prefs.boolForKey("isInPrivateMode"), !isInPrivateMode && shouldSendToLP() {
             Leanplum.track(eventName.rawValue, withParameters: parameters)
         }
     }
@@ -189,7 +190,7 @@ class LeanplumIntegration {
         guard let shouldShowFocusUI = LeanplumIntegration.sharedInstance.getBoolVariableFromServer(key: "shouldShowFocusUI") else {
             return false
         }
-        return  shouldShowFocusUI && (canInstallKlar() || canInstallFocus())
+        return shouldShowFocusUI && (canInstallKlar() || canInstallFocus())
     }
 
     func setUserAttributes(attributes: [AnyHashable : Any]) {

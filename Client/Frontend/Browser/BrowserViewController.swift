@@ -80,7 +80,7 @@ class BrowserViewController: UIViewController {
     fileprivate var pasteAction: AccessibleAction!
     fileprivate var copyAddressAction: AccessibleAction!
 
-    fileprivate weak var tabTrayController: TabTrayController!
+    weak var tabTrayController: TabTrayController!
 
     fileprivate let profile: Profile
     let tabManager: TabManager
@@ -165,6 +165,12 @@ class BrowserViewController: UIViewController {
         screenshotHelper = ScreenshotHelper(controller: self)
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)
+
+        if let isInPrivateMode = profile.prefs.boolForKey("isInPrivateMode") {} else {
+            let tabTrayController = self.tabTrayController ?? TabTrayController(tabManager: tabManager, profile: profile, tabTrayDelegate: self)
+            profile.prefs.setBool(tabTrayController.privateMode, forKey: "isInPrivateMode")
+            self.tabTrayController = tabTrayController
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -1059,6 +1065,7 @@ class BrowserViewController: UIViewController {
             tabTrayController.changePrivacyMode(isPrivate)
         }
         self.tabTrayController = tabTrayController
+        profile.prefs.setBool(isPrivate, forKey: "isInPrivateMode")
     }
 
     func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool) {
@@ -1803,7 +1810,8 @@ extension BrowserViewController: TabToolbarDelegate {
             self.removeBookmark(tabState)
         } else {
             self.addBookmark(tabState)
-            LeanplumIntegration.sharedInstance.track(eventName: .savedBookmark)
+            LeanplumIntegration.sharedInstance.track(eventName: .savedBookmark
+            )
         }
     }
 

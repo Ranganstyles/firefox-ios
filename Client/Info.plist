@@ -9,11 +9,11 @@
 	<key>MozDevelopmentTeam</key>
 	<string>$(DEVELOPMENT_TEAM)</string>
 	<key>LeanplumEnvironment</key>
-	<string>$(LEANPLUM_ENVIRONMENT)</string>
+	<string>development</string>
 	<key>LeanplumAppId</key>
-	<string>$(LEANPLUM_APP_ID</string>
+	<string>app_MUd3n2yw07Lg5hy0f8hRXuj1jI5ml17ww3haFrbKUBw</string>
 	<key>LeanplumKey</key>
-	<string>$(LEANPLUM_KEY)</string>
+	<string>dev_CqOHfdrK6vLrq09CTxKdeOTTGFohQaZvVuym91HYIJg</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(APP_IDENTIFIER_PREFIX)</string>
 	<key>MozWhatsNewTopic</key>
